@@ -23,18 +23,35 @@ rules/auto-doc-rules.md        CLAUDE.md에 주입되는 구동 규칙 (교체 �
 
 ## 설치
 
-플러그인을 로컬 마켓플레이스로 등록하거나 `~/.claude/plugins` 에 링크한 뒤, 대상 레포에서:
+이 저장소는 **플러그인이자 마켓플레이스**다. Claude Code에서 저장소를 마켓플레이스로 등록한 뒤 플러그인을 설치한다:
 
 ```
-/init-workstructure [작업자이름]
+/plugin marketplace add <your-username>/claude-worklog-discipline
+/plugin install worklog-discipline@worklog-discipline
 ```
 
-`docs/` 트리와 템플릿을 깔고, 자동 문서화 규칙을 `CLAUDE.md` 에 멱등하게 주입한다.
+> 설치에 쓰는 이름은 저장소명(`claude-worklog-discipline`)이 아니라 **플러그인명 `worklog-discipline`** 이다.
+> 같은 PC에서 먼저 테스트하려면 원격 대신 로컬 경로로 등록할 수도 있다:
+> `/plugin marketplace add /path/to/worklog-discipline`
+
+## 사용
+
+설치 후, **하네스를 세팅하려는 대상 프로젝트**에서 두 명령을 실행한다:
+
+```
+/init-workstructure [작업자이름]     # 1. 구조 + 규칙 설치
+/sync-agents                          # 2. 현재 코드에 맞는 AGENTS.md 생성 (선택)
+```
+
+**1. `/init-workstructure`** — `docs/worklog/`·`docs/plan/{active,completed,templates}/` 트리와 템플릿을 깔고, 자동 문서화 규칙을 대상 레포의 `CLAUDE.md` 에 멱등하게 주입한다. 이 순간부터 작업이 끝날 때마다 worklog가, 기능 개발 시 devlog가 자동으로 작성된다.
 재실행해도 안전하다 — 규칙 블록만 교체되고 프로젝트 확장 규칙(`PROJECT-EXTENSIONS`)은 보존된다.
+
+**2. `/sync-agents`** — 레포를 순회하며 디렉터리별 `AGENTS.md` 를 코드 기반으로 생성/갱신한다. 기존 `<!-- MANUAL: -->` 아래 수기 내용은 보존한다. (worklog 자동작성과 무관한 별도 문서화 단계라 선택이다.)
+
+이후에는 그냥 작업만 하면 된다 — 규칙이 `CLAUDE.md` 에 심겼으므로 Claude가 알아서 문서를 남긴다.
 
 ## 로드맵 (다음 단계)
 
 - `commands/worklog.md`, `devlog.md`, `handover.md` — 각 문서를 손수 부를 수 있는 명령
 - `skills/` — 작성 방법 지식 (헤더 최소화 규칙 등)
 - `hooks/hooks.json` — Stop 훅으로 worklog 리마인더 백스톱
-- `.claude-plugin/marketplace.json` — GitHub 배포용 마켓플레이스 정의
