@@ -26,7 +26,7 @@ rules/auto-doc-rules.md        CLAUDE.md에 주입되는 구동 규칙 (교체 �
 이 저장소는 **플러그인이자 마켓플레이스**다. Claude Code에서 저장소를 마켓플레이스로 등록한 뒤 플러그인을 설치한다:
 
 ```
-/plugin marketplace add <your-username>/claude-worklog-discipline
+/plugin marketplace add taejongK/claude-worklog-discipline
 /plugin install worklog-discipline@worklog-discipline
 ```
 
