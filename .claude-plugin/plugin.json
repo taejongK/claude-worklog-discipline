@@ -1,0 +1,8 @@
+{
+  "name": "worklog-discipline",
+  "description": "AI가 일한 결과를 스스로 기록하게 만드는 문서 규율 — worklog, plan(devlog/handover), AGENTS.md 계층을 다른 프로젝트에 심고 자동 발동시킨다.",
+  "version": "0.1.0",
+  "author": {
+    "name": "taejong"
+  }
+}
