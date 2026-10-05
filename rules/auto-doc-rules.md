@@ -1,57 +1,53 @@
-<!-- worklog-discipline:auto-doc-rules v0.1.0 -->
+<!-- worklog-discipline:auto-doc-rules v1.0.0 -->
 <!-- 이 블록은 worklog-discipline 플러그인의 /init-workstructure 가 주입한다. 통째로 교체/갱신되므로 이 마커 사이를 직접 편집하지 말 것. -->
 
 ## 자동 문서화 규칙 (필수)
 
 작업과 함께 문서를 갱신한다. 아래 상황에서는 **사용자가 요청하지 않아도 자동으로** 실행한다.
-
-### 작업 완료 시 (Worklog) — 항상
+모든 작업 문서는 `docs/worklog/` 안에 둔다. 중심은 메인 로그 하나이고, 나머지 문서는 메인 로그에서 링크로 연결한다.
 
 ```
-1. 작업이 끝나면 docs/worklog/{YYYY_MM_DD}.md 파일에 기록한다.
-   - 파일이 없으면 생성, 있으면 해당 날짜 파일에 작업별로 append.
-   - 파일명 형식: YYYY_MM_DD.md (예: 2026_07_10.md)
+docs/worklog/
+  {프로젝트명}_log.md    메인 로그 (/init-workstructure 가 만든 파일, 하나만 존재)
+  details/               작업 단위의 상세 문서
+  handover/              기능 인계 문서
+  templates/             HANDOVER · AGENTS 템플릿
+```
+
+### 작업 완료 시 (메인 로그) — 항상
+
+```
+1. 작업이 끝나면 docs/worklog/{프로젝트명}_log.md 에 기록한다.
+   - 날짜는 `## YYYY-MM-DD`, 작업 단위는 그 아래 `### {작업 제목}` 으로 쓴다.
+   - 파일 끝의 마지막 `##` 가 오늘 날짜면 그 아래에 `###` 를 append, 아니면 `## 오늘날짜` 를 새로 추가한다.
 
 2. 각 작업 항목에 반드시 포함:
    - 작업자 이름 (모르면 사용자에게 물어본다)
    - 대상 파일/모듈
    - 무엇을·왜 변경했는지, 검증 방법/결과
 
-3. 헤더 최소화 — 헤더를 여러 단계로 쓰지 않는다.
-   각 작업 항목 제목만 `###`로 구분하고, 항목 내부 구분(배경/방법/결과/검증 등)은
-   별도 헤더 대신 볼드 라벨·불렛으로 가볍게 표현한다.
+3. 헤더는 `##`(날짜)와 `###`(작업)만 쓴다.
+   항목 내부 구분(배경/방법/결과/검증 등)은 별도 헤더 대신 볼드 라벨·불렛으로 가볍게 표현한다.
 ```
 
-### 기능 개발 시작 시 (devlog)
+### 더 깊게 정리할 내용이 있을 때 (상세 문서)
 
 ```
-docs/plan/templates/DEV_LOG_TEMPLATE.md 를 복사해
-docs/plan/active/{YYYYMMDD}_{기능명}_devlog.md 생성:
-- 기능명·목표·완료 기준을 채우고 초기 개발 계획을 작성한다.
-```
-
-### 개발 중 방향/결정 변경 시 (devlog 갱신)
-
-```
-docs/plan/active/{기능명}_devlog.md 갱신:
-- 변경 이력 테이블에 날짜·변경 내용·이유를 추가한다.
-- 현재 상태 섹션(마지막 작업/다음 할 일)을 갱신한다.
+작업 항목에 담기엔 긴 내용(설계 대안 비교, 디버깅 과정, 실험 결과, 조사 내용 등)은
+docs/worklog/details/{YYYY_MM_DD}_{주제}.md 로 따로 만들고,
+메인 로그의 해당 작업 항목에 링크를 남긴다:
+  - **상세**: [{주제}](details/{YYYY_MM_DD}_{주제}.md)
+같은 주제를 이후 작업에서 이어가면 기존 상세 문서를 갱신하고, 그날 작업 항목에 다시 링크한다.
 ```
 
 ### 기능 구현 완료 시 (인계 문서)
 
 ```
-docs/plan/templates/HANDOVER_TEMPLATE.md 를 복사해
-docs/plan/active/{YYYYMMDD}_{기능명}.md 생성:
+docs/worklog/templates/HANDOVER_TEMPLATE.md 를 복사해
+docs/worklog/handover/{YYYYMMDD}_{기능명}.md 생성:
 - 핵심 구현 로직, 데이터 흐름, 설계 결정, 구현 시 주의사항을 채운다.
-docs/plan/handover-index.md 의 인계 대기 테이블에 추가한다.
-```
-
-### 인계 완료 시
-
-```
-docs/plan/active/{기능명}.md 와 {기능명}_devlog.md 를 docs/plan/completed/ 로 이동.
-docs/plan/handover-index.md 의 인계 현황 테이블을 갱신한다.
+메인 로그의 해당 작업 항목에 링크를 남긴다:
+  - **인계**: [{기능명}](handover/{YYYYMMDD}_{기능명}.md)
 ```
 
 ### 디렉터리 구조 변경 시 (AGENTS.md 계층)
@@ -60,7 +56,7 @@ docs/plan/handover-index.md 의 인계 현황 테이블을 갱신한다.
 새 디렉터리 추가/역할 변경 시 해당 디렉터리의 AGENTS.md 를 갱신한다.
 - 상위 디렉터리 AGENTS.md 의 Subdirectories 표도 함께 갱신.
 - <!-- MANUAL: --> 마커 아래 손으로 쓴 내용은 절대 덮어쓰지 않는다.
-- 없으면 docs/plan/templates/AGENTS_TEMPLATE.md 형식으로 새로 만든다.
+- 없으면 docs/worklog/templates/AGENTS_TEMPLATE.md 형식으로 새로 만든다.
 ```
 
 ### 프로젝트별 확장 규칙 (Extension)
