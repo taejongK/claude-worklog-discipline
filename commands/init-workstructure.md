@@ -1,5 +1,5 @@
 ---
-description: 현재 레포에 worklog·plan·AGENTS 문서 규율 구조를 심고, 자동 문서화 규칙을 CLAUDE.md에 주입한다
+description: 현재 레포에 worklog·AGENTS 문서 규율 구조를 심고, 자동 문서화 규칙을 CLAUDE.md에 주입한다
 argument-hint: "[작업자 이름 (선택)]"
 allowed-tools: Bash, Read, Write, Edit
 ---
@@ -15,45 +15,29 @@ allowed-tools: Bash, Read, Write, Edit
 
 ```
 docs/worklog/
-docs/plan/active/
-docs/plan/completed/
-docs/plan/templates/
+docs/worklog/details/
+docs/worklog/handover/
+docs/worklog/templates/
 ```
 
 ## 2. 템플릿 복사
 
-`${CLAUDE_PLUGIN_ROOT}/templates/` 의 세 파일을 `docs/plan/templates/` 로 복사한다.
+`${CLAUDE_PLUGIN_ROOT}/templates/` 의 두 파일을 `docs/worklog/templates/` 로 복사한다.
 **대상에 같은 이름이 이미 있으면 덮어쓰지 말고 건너뛴다** (프로젝트가 커스터마이즈했을 수 있음):
 
-- `DEV_LOG_TEMPLATE.md`
 - `HANDOVER_TEMPLATE.md`
 - `AGENTS_TEMPLATE.md`
 
-## 3. handover-index 생성
+## 3. 메인 로그 생성
 
-`docs/plan/handover-index.md` 가 없으면 아래 골격으로 생성한다 (있으면 건드리지 않는다):
+`docs/worklog/` 에 `*_log.md` 파일이 하나도 없으면 `docs/worklog/{프로젝트명}_log.md` 를 아래 골격으로 생성한다.
+프로젝트명은 레포 루트 디렉터리 이름을 쓴다. 이미 있으면 건드리지 않는다.
 
 ```markdown
-# Handover Index
+# {프로젝트명} 작업 로그
 
-> ⚙️ 이 파일은 자동으로 관리됩니다. 기능 인계 완료 시 갱신됩니다.
-> 상세 문서는 `docs/plan/completed/` 참조.
-
----
-
-## 인계 현황
-
-| 날짜 | 기능명 | 담당자 | 문서 경로 | 상태 |
-| ---- | ------ | ------ | --------- | ---- |
-
----
-
-## 인계 대기 중
-
-`docs/plan/active/` 에 있는 문서들:
-
-| 기능명 | 문서 경로 | 작성일 |
-| ------ | --------- | ------ |
+> 작업 단위마다 자동으로 기록됩니다. 날짜는 `##`, 작업은 `###`.
+> 깊게 정리한 내용은 `details/`, 인계 문서는 `handover/` 에 두고 각 작업 항목에서 링크합니다.
 ```
 
 ## 4. 자동 문서화 규칙을 CLAUDE.md에 주입 (핵심)
@@ -75,4 +59,4 @@ docs/plan/templates/
 ## 7. 결과 보고
 
 무엇을 새로 만들고 / 건너뛰고 / 교체했는지 표로 요약한다. 그리고 다음 한 줄을 안내한다:
-"이제 작업이 끝날 때마다 `docs/worklog/{오늘}.md` 에 자동으로 기록됩니다. 기능 개발을 시작하려면 '개발 시작해줘: {기능명}' 이라고 하세요."
+"이제 작업이 끝날 때마다 `docs/worklog/{프로젝트명}_log.md` 에 자동으로 기록됩니다."
