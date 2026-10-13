@@ -45,7 +45,7 @@ rules/auto-doc-rules.md        CLAUDE.md에 주입되는 구동 규칙 (교체 �
 /sync-agents                          # 2. 현재 코드에 맞는 AGENTS.md 생성 (선택)
 ```
 
-**1. `/init-workstructure`** — `docs/worklog/{details,templates}/` 트리와 템플릿을 깔고, 자동 문서화 규칙을 대상 레포의 `CLAUDE.md` 에 멱등하게 주입한다. 이 순간부터 작업이 끝날 때마다 그날의 로그 파일에 자동으로 기록된다.
+**1. `/init-workstructure`** — `docs/worklog/{details,templates}/` 트리와 템플릿을 깔고, 자동 문서화 규칙을 대상 레포의 `CLAUDE.md` 에 멱등하게 주입한다. 이 순간부터 커밋할 때마다(또는 요청 시) 그날의 로그 파일에 자동으로 기록된다.
 재실행해도 안전하다 — 규칙 블록만 교체되고 프로젝트 확장 규칙(`PROJECT-EXTENSIONS`)은 보존된다.
 
 **2. `/sync-agents`** — 레포를 순회하며 디렉터리별 `AGENTS.md` 를 코드 기반으로 생성/갱신한다. 기존 `<!-- MANUAL: -->` 아래 수기 내용은 보존한다. (worklog 자동작성과 무관한 별도 문서화 단계라 선택이다.)
