@@ -1,13 +1,13 @@
 ---
 description: 현재 레포를 순회하며 디렉터리별 AGENTS.md 문서를 코드 기반으로 생성/갱신한다 (MANUAL 블록 보존)
-argument-hint: "[대상 경로 (선택, 기본: 레포 루트)]"
+argument-hint: "[대상 경로 (선택, 기본: 현재 작업 디렉터리)]"
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep
 ---
 
 # sync-agents
 
 현재 레포의 주요 디렉터리마다 `AGENTS.md`를 **코드를 실제로 읽어서** 생성/갱신한다.
-`$ARGUMENTS` 로 시작 경로가 주어지면 그 하위만, 없으면 레포 루트부터 처리한다.
+`$ARGUMENTS` 로 시작 경로가 주어지면 그 하위만, 없으면 현재 작업 디렉터리(Claude가 실행된 위치, `pwd`)부터 처리한다. git 레포 루트로 이동하지 않는다.
 
 ## 1. 대상 디렉터리 선정
 
@@ -25,7 +25,7 @@ allowed-tools: Bash, Read, Write, Edit, Glob, Grep
 
 `${CLAUDE_PLUGIN_ROOT}/templates/AGENTS_TEMPLATE.md` 형식을 따른다. 다음을 **코드를 읽고** 채운다:
 
-- **헤더 주석**: `<!-- Parent: {상위 AGENTS.md 상대경로} -->` (레포 루트면 이 줄 생략) / `<!-- Generated / Updated -->` 날짜
+- **헤더 주석**: `<!-- Parent: {상위 AGENTS.md 상대경로} -->` (시작 디렉터리면 이 줄 생략) / `<!-- Generated / Updated -->` 날짜
 - **Purpose**: 이 디렉터리가 무엇을 담당하는지 2~3문장 (파일들을 훑어 추론)
 - **Key Files**: 주요 파일과 한 줄 설명 (엔트리포인트·핵심 모듈 위주, 전부 나열하지 말 것)
 - **Subdirectories**: 하위 디렉터리와 목적, 각 항목에 `(see {하위}/AGENTS.md)` 링크

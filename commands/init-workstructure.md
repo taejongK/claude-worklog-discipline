@@ -6,7 +6,7 @@ allowed-tools: Bash, Read, Write, Edit
 
 # init-workstructure
 
-현재 작업 디렉터리(레포 루트)에 **worklog-discipline** 문서 규율을 설치한다.
+현재 작업 디렉터리(Claude가 실행된 위치, `pwd`)에 **worklog-discipline** 문서 규율을 설치한다. git 레포 루트로 이동하지 않는다 — 아래 모든 경로는 현재 작업 디렉터리 기준이다.
 플러그인 자원은 `${CLAUDE_PLUGIN_ROOT}` 아래에 있다. 아래를 순서대로, 멱등하게(이미 있으면 건드리지 않게) 실행하라.
 
 ## 1. 디렉터리 생성
@@ -28,15 +28,15 @@ docs/worklog/templates/
 
 ## 3. 자동 문서화 규칙을 CLAUDE.md에 주입 (핵심)
 
-`${CLAUDE_PLUGIN_ROOT}/rules/auto-doc-rules.md` 의 **전체 내용**을 레포 루트 `CLAUDE.md` 에 넣는다. 멱등 규칙:
+`${CLAUDE_PLUGIN_ROOT}/rules/auto-doc-rules.md` 의 **전체 내용**을 현재 작업 디렉터리의 `CLAUDE.md` 에 넣는다. 멱등 규칙:
 
 - `CLAUDE.md` 가 없으면: `# CLAUDE.md` 헤더 + 규칙 블록으로 새로 만든다.
 - 이미 `<!-- worklog-discipline:auto-doc-rules` 마커가 있으면: 그 시작 마커부터 `<!-- /worklog-discipline:auto-doc-rules -->` 끝 마커까지를 새 내용으로 **교체**한다. 단 교체 시 기존 블록의 `<!-- PROJECT-EXTENSIONS:` 아래 프로젝트가 손으로 추가한 확장 규칙이 있으면 **보존해서 새 블록의 같은 위치에 옮겨 붙인다**.
 - 마커가 없으면: 파일 끝에 개행 두 줄 후 규칙 블록을 append 한다.
 
-## 4. 루트 AGENTS.md (선택)
+## 4. AGENTS.md (선택)
 
-레포 루트에 `AGENTS.md` 가 없으면 `${CLAUDE_PLUGIN_ROOT}/templates/AGENTS_TEMPLATE.md` 형식으로 최소 골격만 만든다(Parent 줄은 삭제). 이미 있으면 건드리지 않는다.
+현재 작업 디렉터리에 `AGENTS.md` 가 없으면 `${CLAUDE_PLUGIN_ROOT}/templates/AGENTS_TEMPLATE.md` 형식으로 최소 골격만 만든다(Parent 줄은 삭제). 이미 있으면 건드리지 않는다.
 
 ## 5. 작업자 이름
 
