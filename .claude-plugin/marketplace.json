@@ -7,7 +7,7 @@
     {
       "name": "worklog-discipline",
       "source": "./",
-      "description": "AI가 일한 결과를 스스로 기록하게 만드는 문서 규율 — 날짜별 worklog(상세 문서 링크)·AGENTS.md 계층을 다른 프로젝트에 심고 자동 발동시킨다."
+      "description": "AI가 일한 결과를 스스로 기록하게 만드는 문서 규율 — research·poc 문서 구조(docs/index·worklog·report·plan·reference)와 AGENTS.md 계층을 다른 프로젝트에 심고 자동 발동시킨다."
     }
   ]
 }

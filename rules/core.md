@@ -1,19 +1,20 @@
-<!-- worklog-discipline:auto-doc-rules v2.1.0 -->
+<!-- worklog-discipline:auto-doc-rules v3.0.0 mode={MODE} -->
 <!-- 이 블록은 worklog-discipline 플러그인의 /init-workstructure 가 주입한다. 통째로 교체/갱신되므로 이 마커 사이를 직접 편집하지 말 것. -->
 
 ## 자동 문서화 규칙 (필수)
 
 작업과 함께 문서를 갱신한다. 아래 상황에서는 **사용자가 요청하지 않아도 자동으로** 실행한다.
-모든 작업 문서는 `docs/worklog/` 안에 둔다. 중심은 날짜별 로그이고, 상세 문서는 로그에서 링크로 연결한다.
+레포 최상위는 역할별로 나눈다:
 
 ```
-docs/worklog/
-  {YYYY_MM_DD}.md        날짜별 작업 로그 (하루 한 파일)
-  details/               작업 단위의 상세 문서
-  templates/             AGENTS 템플릿
+README.md     프로젝트 소개 (사람이 읽는 첫 문서)
+docs/         문서 — 진입점은 docs/index.md
+src/          코드 (권장. 기존 레포의 코드 위치는 옮기지 않는다)
 ```
 
-### 커밋 시 (날짜별 로그) — 항상
+문서를 찾거나 새로 만들 때는 `docs/index.md` 에서 시작한다.
+
+### 커밋 시 (docs/worklog 날짜별 로그) — 항상
 
 ```
 0. 언제 기록하는가
@@ -44,6 +45,7 @@ docs/worklog/
 5. 줄글로 쓰지 않는다. 라벨 아래는 하위 불렛으로 구조화하고 짧게 쓴다.
    - 불렛 하나는 한 줄, 한 가지 사실. 문장 대신 명사형·개조식으로 끝낸다.
    - 수식어·경위 설명·반복을 뺀다. 빼도 뜻이 통하면 뺀다.
+   - 볼드체(**...**)를 쓰지 않는다.
    예:
      ### 로그인 세션 만료 버그 수정
      - 작업자: 홍길동
@@ -56,14 +58,15 @@ docs/worklog/
        - 남은 문제: 다중 탭 동시 갱신 미검증
 ```
 
-### 더 깊게 정리할 내용이 있을 때 (상세 문서)
+<!-- MODE-RULES -->
+
+### 문서를 만들거나 옮길 때 (docs/index.md)
 
 ```
-작업 항목에 담기엔 긴 내용(설계 대안 비교, 디버깅 과정, 실험 결과, 조사 내용 등)은
-docs/worklog/details/{YYYY_MM_DD}_{주제}.md 로 따로 만들고,
-그날 로그의 해당 작업 항목에 링크를 남긴다:
-  - 상세: [{주제}](details/{YYYY_MM_DD}_{주제}.md)
-같은 주제를 이후 작업에서 이어가면 기존 상세 문서를 갱신하고, 그날 작업 항목에 다시 링크한다.
+docs/index.md 는 docs/ 아래 문서의 목차다. 코드(src)는 다루지 않는다 (AGENTS.md 가 맡는다).
+- docs/ 아래 문서를 새로 만들거나, 옮기거나, 지우면 같은 작업 안에서 index.md 를 갱신한다.
+- 폴더별 `##` 섹션 아래 문서마다 한 줄: - [{제목}]({상대경로}) — {한 줄 요약}
+- worklog 는 날짜 파일을 하나하나 나열하지 않고 폴더 링크만 둔다.
 ```
 
 ### 디렉터리 구조 변경 시 (AGENTS.md 계층)
@@ -72,7 +75,8 @@ docs/worklog/details/{YYYY_MM_DD}_{주제}.md 로 따로 만들고,
 새 디렉터리 추가/역할 변경 시 해당 디렉터리의 AGENTS.md 를 갱신한다.
 - 상위 디렉터리 AGENTS.md 의 Subdirectories 표도 함께 갱신.
 - <!-- MANUAL: --> 마커 아래 손으로 쓴 내용은 절대 덮어쓰지 않는다.
-- 없으면 docs/worklog/templates/AGENTS_TEMPLATE.md 형식으로 새로 만든다.
+- 없으면 Purpose / Key Files / Subdirectories / For AI Agents 섹션과
+  끝의 <!-- MANUAL: --> 마커로 새로 만든다.
 ```
 
 ### 프로젝트별 확장 규칙 (Extension)
